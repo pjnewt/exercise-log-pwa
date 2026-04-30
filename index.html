@@ -73,12 +73,21 @@
             font-weight: 500;
             margin-bottom: 8px;
             color: #333;
+            font-size: 1.1rem;
+        }
+        
+        .session-description {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 10px;
+            line-height: 1.4;
         }
         
         .session-controls {
             display: flex;
             gap: 10px;
             margin-top: 10px;
+            flex-wrap: wrap;
         }
         
         .date-input, .notes-input {
@@ -169,6 +178,10 @@
             .session-controls {
                 flex-direction: column;
             }
+            
+            .session-description {
+                font-size: 0.8rem;
+            }
         }
     </style>
 </head>
@@ -203,50 +216,50 @@
     </div>
 
     <script>
-        // Exercise sessions data
+        // Exercise sessions data with detailed descriptions
         const sessions = [
-            { id: "1.1", type: "Strength: Heavy Squat" },
-            { id: "1.2", type: "Cycling: Base Endurance" },
-            { id: "1.3", type: "Strength: Power Squat" },
-            { id: "1.4", type: "Cycling: VO2 Max (Power)" },
-            { id: "1.5", type: "Cycling: Active Recovery" },
-            { id: "1.6", type: "Cycling: HIIT (Micro)" },
-            { id: "1.7", type: "Rest" },
-            { id: "2.1", type: "Strength: Heavy Squat" },
-            { id: "2.2", type: "Cycling: Base Endurance" },
-            { id: "2.3", type: "Strength: Power Squat" },
-            { id: "2.4", type: "Cycling: VO2 Max (Power)" },
-            { id: "2.5", type: "Cycling: Active Recovery" },
-            { id: "2.6", type: "Cycling: HIIT (Micro)" },
-            { id: "2.7", type: "Rest" },
-            { id: "3.1", type: "Strength: Heavy Squat" },
-            { id: "3.2", type: "Cycling: Base Endurance" },
-            { id: "3.3", type: "Strength: Power Squat" },
-            { id: "3.4", type: "Cycling: VO2 Max (Power)" },
-            { id: "3.5", type: "Cycling: Active Recovery" },
-            { id: "3.6", type: "Cycling: HIIT (Micro)" },
-            { id: "3.7", type: "Rest" },
-            { id: "4.1", type: "Strength: Heavy Squat" },
-            { id: "4.2", type: "Cycling: Base Endurance" },
-            { id: "4.3", type: "Strength: Power Squat" },
-            { id: "4.4", type: "Cycling: VO2 Max (Power)" },
-            { id: "4.5", type: "Cycling: Active Recovery" },
-            { id: "4.6", type: "Cycling: HIIT (Micro)" },
-            { id: "4.7", type: "Rest" },
-            { id: "5.1", type: "Strength: Heavy Squat" },
-            { id: "5.2", type: "Cycling: Base Endurance" },
-            { id: "5.3", type: "Strength: Power Squat" },
-            { id: "5.4", type: "Cycling: VO2 Max (Power)" },
-            { id: "5.5", type: "Cycling: Active Recovery" },
-            { id: "5.6", type: "Cycling: HIIT (Micro)" },
-            { id: "5.7", type: "Rest" },
-            { id: "6.1", type: "Strength: Heavy Squat" },
-            { id: "6.2", type: "Cycling: Base Endurance" },
-            { id: "6.3", type: "Strength: Power Squat" },
-            { id: "6.4", type: "Cycling: VO2 Max (Power)" },
-            { id: "6.5", type: "Cycling: Active Recovery" },
-            { id: "6.6", type: "Cycling: HIIT (Micro)" },
-            { id: "6.7", type: "Rest" }
+            { id: "1.1", type: "Strength: Heavy Squat", description: "(3 x 6 Reps @ 7-8 RPE - Focus on depth & form)" },
+            { id: "1.2", type: "Cycling: Base Endurance", description: "(60 mins @ 140W–155W (Zone 2))" },
+            { id: "1.3", type: "Cycling: Micro HIIT", description: "(10 x 30s sprints: 30s @ 300W+ / 30s recovery @ 80W)" },
+            { id: "1.4", type: "Strength: Power Squat", description: "(3 x 10 reps @ 60% max. Focus on ascending speed)" },
+            { id: "1.5", type: "Cycling: VO2 Max - Power", description: "(4 x 4 intervals: 4 mins @ 235W–245W - Zone 5 / 3 mins recovery @ 100W)" },
+            { id: "1.6", type: "Cycling: Active Recovery", description: "(30 mins @ < 118W - Zone 1)" },
+            { id: "1.7", type: "Rest", description: "" },
+            { id: "2.1", type: "Strength: Heavy Squat", description: "(3 x 6 Reps @ 7-8 RPE - Focus on depth & form)" },
+            { id: "2.2", type: "Cycling: Base Endurance", description: "(60 mins @ 140W–155W (Zone 2))" },
+            { id: "2.3", type: "Cycling: Micro HIIT", description: "(10 x 30s sprints: 30s @ 300W+ / 30s recovery @ 80W)" },
+            { id: "2.4", type: "Strength: Power Squat", description: "(3 x 10 reps @ 60% max. Focus on ascending speed)" },
+            { id: "2.5", type: "Cycling: VO2 Max - Power", description: "(4 x 4 intervals: 4 mins @ 235W–245W - Zone 5 / 3 mins recovery @ 100W)" },
+            { id: "2.6", type: "Cycling: Active Recovery", description: "(30 mins @ < 118W - Zone 1)" },
+            { id: "2.7", type: "Rest", description: "" },
+            { id: "3.1", type: "Strength: Heavy Squat", description: "(3 x 6 Reps @ 7-8 RPE - Focus on depth & form)" },
+            { id: "3.2", type: "Cycling: Base Endurance", description: "(60 mins @ 140W–155W (Zone 2))" },
+            { id: "3.3", type: "Cycling: Micro HIIT", description: "(10 x 30s sprints: 30s @ 300W+ / 30s recovery @ 80W)" },
+            { id: "3.4", type: "Strength: Power Squat", description: "(3 x 10 reps @ 60% max. Focus on ascending speed)" },
+            { id: "3.5", type: "Cycling: VO2 Max - Power", description: "(4 x 4 intervals: 4 mins @ 235W–245W - Zone 5 / 3 mins recovery @ 100W)" },
+            { id: "3.6", type: "Cycling: Active Recovery", description: "(30 mins @ < 118W - Zone 1)" },
+            { id: "3.7", type: "Rest", description: "" },
+            { id: "4.1", type: "Strength: Heavy Squat", description: "(3 x 6 Reps @ 7-8 RPE - Focus on depth & form)" },
+            { id: "4.2", type: "Cycling: Base Endurance", description: "(60 mins @ 140W–155W (Zone 2))" },
+            { id: "4.3", type: "Cycling: Micro HIIT", description: "(10 x 30s sprints: 30s @ 300W+ / 30s recovery @ 80W)" },
+            { id: "4.4", type: "Strength: Power Squat", description: "(3 x 10 reps @ 60% max. Focus on ascending speed)" },
+            { id: "4.5", type: "Cycling: VO2 Max - Power", description: "(4 x 4 intervals: 4 mins @ 235W–245W - Zone 5 / 3 mins recovery @ 100W)" },
+            { id: "4.6", type: "Cycling: Active Recovery", description: "(30 mins @ < 118W - Zone 1)" },
+            { id: "4.7", type: "Rest", description: "" },
+            { id: "5.1", type: "Strength: Heavy Squat", description: "(3 x 6 Reps @ 7-8 RPE - Focus on depth & form)" },
+            { id: "5.2", type: "Cycling: Base Endurance", description: "(60 mins @ 140W–155W (Zone 2))" },
+            { id: "5.3", type: "Cycling: Micro HIIT", description: "(10 x 30s sprints: 30s @ 300W+ / 30s recovery @ 80W)" },
+            { id: "5.4", type: "Strength: Power Squat", description: "(3 x 10 reps @ 60% max. Focus on ascending speed)" },
+            { id: "5.5", type: "Cycling: VO2 Max - Power", description: "(4 x 4 intervals: 4 mins @ 235W–245W - Zone 5 / 3 mins recovery @ 100W)" },
+            { id: "5.6", type: "Cycling: Active Recovery", description: "(30 mins @ < 118W - Zone 1)" },
+            { id: "5.7", type: "Rest", description: "" },
+            { id: "6.1", type: "Strength: Heavy Squat", description: "(3 x 6 Reps @ 7-8 RPE - Focus on depth & form)" },
+            { id: "6.2", type: "Cycling: Base Endurance", description: "(60 mins @ 140W–155W (Zone 2))" },
+            { id: "6.3", type: "Cycling: Micro HIIT", description: "(10 x 30s sprints: 30s @ 300W+ / 30s recovery @ 80W)" },
+            { id: "6.4", type: "Strength: Power Squat", description: "(3 x 10 reps @ 60% max. Focus on ascending speed)" },
+            { id: "6.5", type: "Cycling: VO2 Max - Power", description: "(4 x 4 intervals: 4 mins @ 235W–245W - Zone 5 / 3 mins recovery @ 100W)" },
+            { id: "6.6", type: "Cycling: Active Recovery", description: "(30 mins @ < 118W - Zone 1)" },
+            { id: "6.7", type: "Rest", description: "" }
         ];
 
         // Load data from localStorage
@@ -288,6 +301,7 @@
                 <div class="session-id">${session.id}</div>
                 <div class="session-details">
                     <div class="session-type">${session.type}</div>
+                    ${session.description ? `<div class="session-description">${session.description}</div>` : ''}
                     <div class="session-controls">
                         <input type="date" class="date-input" id="date-${session.id}" value="${sessionData.date || ''}">
                         <input type="text" class="notes-input" id="notes-${session.id}" placeholder="Notes..." value="${sessionData.notes || ''}">
