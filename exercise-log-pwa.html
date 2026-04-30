@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>6-Week Exercise Log</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#4CAF50">
+    <style>
+        :root {
+            --primary: #4CAF50;
+            --secondary: #45a049;
+            --light: #f5f5f5;
+            --dark: #333;
+            --border: #ddd;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f9f9f9;
+            color: var(--dark);
+            padding: 10px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            padding: 15px 0;
+            background-color: var(--primary);
+            color: white;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            font-size: 1.5rem;
+        }
+        
+        .session-row {
+            display: flex;
+            background: white;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .session-id {
+            flex: 0 0 80px;
+            padding: 15px;
+            background-color: #e8f5e9;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-right: 1px solid var(--border);
+        }
+        
+        .session-details {
+            flex: 1;
+            padding: 15px;
+        }
+        
+        .session-type {
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: #333;
+        }
+        
+        .session-controls {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .date-input, .notes-input {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+        
+        .notes-input {
+            min-height: 60px;
+            resize: vertical;
+        }
+        
+        .btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.3s;
+        }
+        
+        .btn:hover {
+            background-color: var(--secondary);
+        }
+        
+        .btn-clear {
+            background-color: #f44336;
+        }
+        
+        .btn-clear:hover {
+            background-color: #d32f2f;
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .completed {
+            background-color: #e8f5e9;
+        }
+        
+        .completed .session-type {
+            color: #4CAF50;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 20px 0;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 600px) {
+            .session-row {
+                flex-direction: column;
+            }
+            
+            .session-id {
+                flex: 0 0 auto;
+            }
+            
+            .session-controls {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>6-Week Exercise Log</h1>
+        <p>Track your 42 sessions across 6 weeks</p>
+    </header>
+    
+    <div class="stats">
+        <div class="stat-item">
+            <div class="stat-value" id="total-completed">0</div>
+            <div class="stat-label">Completed</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-value" id="total-sessions">42</div>
+            <div class="stat-label">Total Sessions</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-value" id="completion-percent">0%</div>
+            <div class="stat-label">Completion</div>
+        </div>
+    </div>
+    
+    <div id="sessions-container">
+        <!-- Sessions will be generated here -->
+    </div>
+    
+    <div class="footer">
+        <p>Install as PWA for offline use</p>
+        <p>Works on any Android device</p>
+    </div>
+
+    <script>
+        // Exercise sessions data
+        const sessions = [
+            { id: "1.1", type: "Strength: Heavy Squat" },
+            { id: "1.2", type: "Cycling: Base Endurance" },
+            { id: "1.3", type: "Strength: Power Squat" },
+            { id: "1.4", type: "Cycling: VO2 Max (Power)" },
+            { id: "1.5", type: "Cycling: Active Recovery" },
+            { id: "1.6", type: "Cycling: HIIT (Micro)" },
+            { id: "1.7", type: "Rest" },
+            { id: "2.1", type: "Strength: Heavy Squat" },
+            { id: "2.2", type: "Cycling: Base Endurance" },
+            { id: "2.3", type: "Strength: Power Squat" },
+            { id: "2.4", type: "Cycling: VO2 Max (Power)" },
+            { id: "2.5", type: "Cycling: Active Recovery" },
+            { id: "2.6", type: "Cycling: HIIT (Micro)" },
+            { id: "2.7", type: "Rest" },
+            { id: "3.1", type: "Strength: Heavy Squat" },
+            { id: "3.2", type: "Cycling: Base Endurance" },
+            { id: "3.3", type: "Strength: Power Squat" },
+            { id: "3.4", type: "Cycling: VO2 Max (Power)" },
+            { id: "3.5", type: "Cycling: Active Recovery" },
+            { id: "3.6", type: "Cycling: HIIT (Micro)" },
+            { id: "3.7", type: "Rest" },
+            { id: "4.1", type: "Strength: Heavy Squat" },
+            { id: "4.2", type: "Cycling: Base Endurance" },
+            { id: "4.3", type: "Strength: Power Squat" },
+            { id: "4.4", type: "Cycling: VO2 Max (Power)" },
+            { id: "4.5", type: "Cycling: Active Recovery" },
+            { id: "4.6", type: "Cycling: HIIT (Micro)" },
+            { id: "4.7", type: "Rest" },
+            { id: "5.1", type: "Strength: Heavy Squat" },
+            { id: "5.2", type: "Cycling: Base Endurance" },
+            { id: "5.3", type: "Strength: Power Squat" },
+            { id: "5.4", type: "Cycling: VO2 Max (Power)" },
+            { id: "5.5", type: "Cycling: Active Recovery" },
+            { id: "5.6", type: "Cycling: HIIT (Micro)" },
+            { id: "5.7", type: "Rest" },
+            { id: "6.1", type: "Strength: Heavy Squat" },
+            { id: "6.2", type: "Cycling: Base Endurance" },
+            { id: "6.3", type: "Strength: Power Squat" },
+            { id: "6.4", type: "Cycling: VO2 Max (Power)" },
+            { id: "6.5", type: "Cycling: Active Recovery" },
+            { id: "6.6", type: "Cycling: HIIT (Micro)" },
+            { id: "6.7", type: "Rest" }
+        ];
+
+        // Load data from localStorage
+        function loadData() {
+            const savedData = localStorage.getItem('exerciseLogData');
+            return savedData ? JSON.parse(savedData) : {};
+        }
+
+        // Save data to localStorage
+        function saveData(data) {
+            localStorage.setItem('exerciseLogData', JSON.stringify(data));
+            updateStats();
+        }
+
+        // Update statistics
+        function updateStats() {
+            const data = loadData();
+            const completed = Object.values(data).filter(session => 
+                session.date && session.date.trim() !== ''
+            ).length;
+            
+            document.getElementById('total-completed').textContent = completed;
+            const percent = Math.round((completed / sessions.length) * 100);
+            document.getElementById('completion-percent').textContent = `${percent}%`;
+        }
+
+        // Create session elements
+        function createSessionElement(session) {
+            const data = loadData();
+            const sessionData = data[session.id] || {};
+            
+            const sessionElement = document.createElement('div');
+            sessionElement.className = 'session-row';
+            if (sessionData.date && sessionData.date.trim() !== '') {
+                sessionElement.classList.add('completed');
+            }
+            
+            sessionElement.innerHTML = `
+                <div class="session-id">${session.id}</div>
+                <div class="session-details">
+                    <div class="session-type">${session.type}</div>
+                    <div class="session-controls">
+                        <input type="date" class="date-input" id="date-${session.id}" value="${sessionData.date || ''}">
+                        <input type="text" class="notes-input" id="notes-${session.id}" placeholder="Notes..." value="${sessionData.notes || ''}">
+                    </div>
+                </div>
+            `;
+            
+            // Add event listeners
+            const dateInput = sessionElement.querySelector(`#date-${session.id}`);
+            const notesInput = sessionElement.querySelector(`#notes-${session.id}`);
+            
+            dateInput.addEventListener('change', function() {
+                const data = loadData();
+                data[session.id] = {
+                    date: this.value,
+                    notes: notesInput.value
+                };
+                saveData(data);
+            });
+            
+            notesInput.addEventListener('input', function() {
+                const data = loadData();
+                data[session.id] = {
+                    date: dateInput.value,
+                    notes: this.value
+                };
+                saveData(data);
+            });
+            
+            return sessionElement;
+        }
+
+        // Initialize the app
+        function init() {
+            const container = document.getElementById('sessions-container');
+            
+            sessions.forEach(session => {
+                container.appendChild(createSessionElement(session));
+            });
+            
+            updateStats();
+        }
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
